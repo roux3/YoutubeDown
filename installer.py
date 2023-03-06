@@ -1,5 +1,6 @@
 from pytube import YouTube,Playlist
 import os
+from moviepy import *
 from moviepy.editor import *
 
 path = "downloads"
@@ -10,9 +11,11 @@ def DownVideo():
     titulo = video.title.replace("/","")
     titulo = titulo.replace("|","")
     titulo = titulo.replace(",","")
+    titulo = titulo.replace(";","")
+    titulo = f"%s" %(titulo)
     print(titulo)
 
-    print(video.streams.get_by_itag("140").download(output_path=path))
+    print(video.streams.get_by_itag("140").download(filename=f"%s.mp4" %(titulo),output_path=path))
     Convert(titulo)
 
 
@@ -23,7 +26,8 @@ def DownPlaylist():
         titulo = video.title.replace("/","")
         titulo = titulo.replace("|","")
         titulo = titulo.replace(",","")
-        print(video.streams.get_by_itag("140").download(output_path=path))
+        titulo = f"%s" %(path,titulo)
+        print(video.streams.get_by_itag("140").download(filename=f"%s.mp4" %(titulo),output_path=path))
         Convert(titulo)
 
 
@@ -34,7 +38,6 @@ def Convert(titulo):
 
     videoToconvert.close()
     os.remove(f"%s/%s.mp4" %(path,titulo))
-
 
 
 
