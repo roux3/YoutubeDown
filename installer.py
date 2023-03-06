@@ -4,31 +4,43 @@ from moviepy import *
 from moviepy.editor import *
 
 path = "downloads"
+regex = [",","|","/",";","\"","?","!","."]
 
 def DownVideo():
     url = input("Digite a url do video: ")
-    video = YouTube(url)
-    titulo = video.title.replace("/","")
-    titulo = titulo.replace("|","")
-    titulo = titulo.replace(",","")
-    titulo = titulo.replace(";","")
-    titulo = f"%s" %(titulo)
-    print(titulo)
+    try:
+        video = YouTube(url)
+        titulo = video.title
 
-    print(video.streams.get_by_itag("140").download(filename=f"%s.mp4" %(titulo),output_path=path))
-    Convert(titulo)
+        for r in regex:
+            titulo = titulo.replace(r,"")
 
+
+        print(video.streams.get_by_itag("140").download(filename=f"%s.mp4" %(titulo),output_path=path))
+        Convert(titulo)
+
+    except (KeyError):
+        print("video privado")
+    
+    
 
 def DownPlaylist():
     url = input("Digite a url da playlist: ")
-    p = Playlist(url)
-    for video in p.videos:
-        titulo = video.title.replace("/","")
-        titulo = titulo.replace("|","")
-        titulo = titulo.replace(",","")
-        titulo = f"%s" %(path,titulo)
-        print(video.streams.get_by_itag("140").download(filename=f"%s.mp4" %(titulo),output_path=path))
-        Convert(titulo)
+    try:
+        p = Playlist(url)
+        for video in p.videos:
+            try:
+                titulo = video.title
+                for r in regex:
+                    titulo = titulo.replace(r,"")
+
+                print(titulo)
+                print(video.streams.get_by_itag("140").download(filename=f"%s.mp4" %(titulo),output_path=path))
+                Convert(titulo)
+            except:
+                print("video privado")
+    except:
+        pass
 
 
 def Convert(titulo):
