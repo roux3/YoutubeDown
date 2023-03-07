@@ -2,12 +2,16 @@ from pytube import YouTube,Playlist
 import os
 from moviepy import *
 from moviepy.editor import *
+from tkinter import filedialog
 
-path = "downloads"
+path = filedialog.askdirectory()
+path = path+"/downloads"
 regex = [",","|","/",";","\"","?","!","."]
 
 def DownVideo():
     url = input("Digite a url do video: ")
+    
+
     try:
         video = YouTube(url)
         titulo = video.title
@@ -26,6 +30,7 @@ def DownVideo():
 
 def DownPlaylist():
     url = input("Digite a url da playlist: ")
+    
     try:
         p = Playlist(url)
         for video in p.videos:
